@@ -1,6 +1,11 @@
 pipeline {
     agent any
     stages {
+        stage('Provide - Access') {
+                    steps {
+                            sh 'ls -ld /back-end'
+                    }
+                }
         stage('Build') {
             steps {
                 dir('/back-end') {
