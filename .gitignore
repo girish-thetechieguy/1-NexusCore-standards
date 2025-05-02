@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+/.idea
+/.gitignore
+/back-end/.gitattributes
+/back-end/.gitignore
+/back-end/.mvn/*
+/back-end/mvnw
+/back-end/mvnw.cmd
