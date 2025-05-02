@@ -4,7 +4,7 @@ pipeline {
         stage('Provide - Access') {
                     steps {
                       sh 'ls'
-                            sh 'cd /back-end'
+                            sh 'cd back-end'
                     }
                 }
         stage('Build') {
