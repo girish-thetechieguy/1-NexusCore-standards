@@ -1,9 +1,15 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'maven-3.8.6'
+        jdk 'jdk-17'
+    }
+
     stages {
         stage('Build') {
             steps {
-                dir('cd back-end') {
+                dir('back-end') {
                     sh 'mvn clean install'
                 }
             }

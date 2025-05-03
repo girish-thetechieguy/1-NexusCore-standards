@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class TestController {
 
-    @GetMapping("/test")
+    @GetMapping("/getTest")
     public ResponseEntity<ApiResponse<String>> getTestResponse() {
         try {
             // 1. Business logic would go here
