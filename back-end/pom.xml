@@ -46,6 +46,8 @@
 							<artifactId>lombok</artifactId>
 						</path>
 					</annotationProcessorPaths>
+					<source>17</source> <!-- Adjust according to your Java version -->
+					<target>17</target>
 				</configuration>
 			</plugin>
 			<plugin>
