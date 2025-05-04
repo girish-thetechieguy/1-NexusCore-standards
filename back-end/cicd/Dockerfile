@@ -4,10 +4,8 @@ FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
 WORKDIR /back-end
 
-RUN pwd && ls -l
-
 # Copy the JAR file from the back-end target directory
-COPY target/back-end.jar back-end.jar
+COPY ../target/back-end.jar back-end.jar
 
 # Expose the application port
 EXPOSE 8081
