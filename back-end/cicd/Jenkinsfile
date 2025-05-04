@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     tools {
         maven 'maven'
     }
@@ -22,7 +22,7 @@ pipeline {
         stage('Dockerize') {
             steps {
                 dir('back-end/cicd') {
-                    sh 'docker build -t girishtechieguy/back-end -f Dockerfile .'
+                    sh 'docker build -t girishtechieguy/back-end -f Dockerfile ..'
                 }
             }
         }
