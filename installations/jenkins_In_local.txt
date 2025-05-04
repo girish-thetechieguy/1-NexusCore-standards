@@ -7,3 +7,11 @@ Update the Jenkins version: brew upgrade jenkins-lts
 
 
 mac go to /usr/local/Cellar/jenkins-lts
+
+deploy kubernetes-cd.hpi file in advanced plugin options
+
+minikube start
+
+minikube status
+
+eval $(minikube docker-env)
