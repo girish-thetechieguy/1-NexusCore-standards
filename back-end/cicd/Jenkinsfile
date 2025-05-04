@@ -21,7 +21,9 @@ pipeline {
         }
         stage('Dockerize') {
             steps {
-                sh 'docker build -t girishtechieguy/back-end .'
+                dir('back-end/cicd') {
+                    sh 'docker build -t girishtechieguy/back-end .'
+                }
             }
         }
         stage('DockerHub Push'){
