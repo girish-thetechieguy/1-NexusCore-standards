@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven'
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                // Get some code from a GitHub repository
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/girish-thetechieguy/1-NexusCore-standards.git']])
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                dir('back-end') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        stage('Dockerize') {
+            steps {
+                sh 'docker build -t girishtechieguy/back-end .'
+            }
+        }
+        stage('DockerHub Push'){
+            steps{
+                 dir('back-end/cicd') {
+                    script{
+                        withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerpwd')]) {
+                            sh 'docker login -u girishtechieguy -p ${dockerpwd}'
+                        }
+                        sh 'docker push girishtechieguy/back-end'
+                    }
+                }
+            }
+        }
+        stage('K8S Deploy'){
+            steps{
+                script{
+                    kubernetesDeploy configs: 'back-end/cicd/deployment.yaml', kubeConfig: [path: ''], kubeconfigId: 'kubeConfig-pwd', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+                }
+            }
+        }
+    }
+}
