@@ -15,3 +15,12 @@ minikube start
 minikube status
 
 eval $(minikube docker-env)
+
+/Users/user/.kube
+
+Must use kubernetes-cd.hpi 1.0.0 ONLY
+open config
+-- Add into kubeconfig-pwd secrets
+
+// to get the URL to check
+minikube service back-end-k8s-svc --url

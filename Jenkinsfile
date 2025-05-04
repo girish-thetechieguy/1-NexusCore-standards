@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        BACKEND_DIR = 'back-end'
+    }
+
     tools {
         maven 'maven'
     }
@@ -9,18 +13,36 @@ pipeline {
         stage('Clone') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/girish-thetechieguy/1-NexusCore-standards.git'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/girish-thetechieguy/1-NexusCore-standards.git']])
             }
         }
         stage('Build') {
             steps {
-                // Run Maven on a Unix agent.
-                sh "mvn clean install"
+                dir('back-end') {
+                    sh 'mvn clean install'
+                }
             }
         }
         stage('Docker Image') {
             steps {
-                sh 'docker build -t girishtechieguy/back-end-0.0.1 .'
+                sh 'docker build -t girishtechieguy/back-end .'
+            }
+        }
+        stage('Push to DockerHub'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerpwd')]) {
+                        sh 'docker login -u girishtechieguy -p ${dockerpwd}'
+                    }
+                    sh 'docker push girishtechieguy/back-end'
+                }
+            }
+        }
+        stage('Deploy to K8S'){
+            steps{
+                script{
+                    kubernetesDeploy configs: 'deployment.yaml', kubeConfig: [path: ''], kubeconfigId: 'kubeConfig-pwd', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+                }
             }
         }
     }
