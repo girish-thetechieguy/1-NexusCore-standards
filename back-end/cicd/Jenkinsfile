@@ -22,6 +22,7 @@ pipeline {
         stage('Dockerize') {
             steps {
                 dir('back-end/cicd') {
+                    sh 'pwd'
                     sh 'docker build -t girishtechieguy/back-end .'
                 }
             }

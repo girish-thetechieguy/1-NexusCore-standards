@@ -1,4 +1,4 @@
 FROM eclipse-temurin:17-jdk-jammy
 EXPOSE 8081
-ADD target/back-end.jar back-end.jar
+ADD ./target/back-end.jar back-end.jar
 ENTRYPOINT ["java","-jar","/back-end.jar"]
