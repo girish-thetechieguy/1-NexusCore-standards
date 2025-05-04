@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir('back-end/cicd') {
                     sh 'pwd'
-                    sh 'docker build -t girishtechieguy/back-end .'
+                    sh 'docker build -t girishtechieguy/back-end -f /Dockerfile .'
                 }
             }
         }
