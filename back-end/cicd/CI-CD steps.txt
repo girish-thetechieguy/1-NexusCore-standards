@@ -24,3 +24,6 @@ open config
 
 // to get the URL to check
 minikube service back-end-k8s-svc --url
+
+Sonarqube token
+Analyze "1-NexusCore-standards": sqp_964fd500ff883f60960cbeb2c61636a3b87e1beb
