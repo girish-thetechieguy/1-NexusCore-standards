@@ -36,3 +36,16 @@ spec:
       port: 8081 # The port that the service is running on in the cluster
       targetPort: 8081 # The port exposed by the service
   type: NodePort # type of the service.
+
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: jenkins-deployer
+rules:
+  - apiGroups: [ "apps" ]
+    resources: [ "deployments" ]
+    verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
