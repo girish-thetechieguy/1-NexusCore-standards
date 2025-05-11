@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+    tools {
+        nodejs "nodejs"
+    }
+    stages {
+        stage("Install dependencies") {
+            steps {
+                dir('front-end') {
+                    sh 'npm install'
+                }
+            }
+        }
+        stage("Build") {
+            steps {
+                dir('front-end') {
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage("Test") {
+            steps {
+                dir('front-end') {
+                    sh 'npm test'
+                }
+            }
+        }
+        stage("Dockerize") {
+            steps {
+                dir('front-end/cicd') {
+                    sh 'docker build -t girishtechieguy/front-end -f Dockerfile ..'
+                }
+            }
+        }
+        stage("DockerHub Push") {
+            steps {
+                dir('front-end/cicd') {
+                    script {
+                        withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerpwd')]) {
+                            sh 'docker login -u girishtechieguy -p ${dockerpwd}'
+                        }
+                        sh 'docker push girishtechieguy/front-end'
+                    }
+                }
+            }
+        }
+        stage("K8S Deploy") {
+            steps {
+                script {
+                    kubernetesDeploy configs: 'front-end/cicd/deployment.yaml', kubeConfig: [path: ''], kubeconfigId: 'kubeConfig-pwd', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+                }
+            }
+        }
+        stage("SonarQube Analysis") {
+            steps {
+                dir('front-end') {
+                    script {
+                        withSonarQubeEnv('SonarQube') {
+                            sh 'npm run sonar'
+                        }
+                    }
+                }
+            }
+        }
+        stage("SonarQube Quality Gate") {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
+        }
+        stage("SonarQube Report") {
+            steps {
+                script {
+                    dir('front-end') {
+                        sh 'npm run sonar-report'
+                    }
+                }
+            }
+        }
+    }
+}
