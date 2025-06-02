@@ -10,13 +10,24 @@ mac go to /usr/local/Cellar/jenkins-lts
 
 deploy kubernetes-cd.hpi file in advanced plugin options
 
+Start all necessary tools:
+------------------------
+Start docker
+brew services start jenkins-lts
 minikube start
+
+Stop all necessary tools:
+------------------------
+exit docker
+brew services stop jenkins-lts
+
 
 minikube status
 
 eval $(minikube docker-env)
 
-/Users/user/.kube
+open /Users/user/.kube/config
+update in Jenkins secrets.
 
 Must use kubernetes-cd.hpi 1.0.0 ONLY
 open config
