@@ -16,7 +16,7 @@ public class TestController {
 
     public static Logger logger =  LoggerFactory.getLogger(TestController.class);
 
-    @GetMapping("/getTest")
+    @GetMapping("/get-test-result")
     public ResponseEntity<ApiResponse<String>> getTestResponse() {
         try {
             // 1. Business logic would go here
