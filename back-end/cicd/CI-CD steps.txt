@@ -5,11 +5,6 @@ Start the Jenkins service: brew services start jenkins-lts
 Restart the Jenkins service: brew services restart jenkins-lts
 Update the Jenkins version: brew upgrade jenkins-lts
 
-
-mac go to /usr/local/Cellar/jenkins-lts
-
-deploy kubernetes-cd.hpi file in advanced plugin options
-
 Start all necessary tools:
 ------------------------
 Start docker
@@ -21,6 +16,10 @@ Stop all necessary tools:
 exit docker
 brew services stop jenkins-lts
 
+
+mac go to /usr/local/Cellar/jenkins-lts
+
+deploy kubernetes-cd.hpi file in advanced plugin options
 
 minikube status
 
@@ -38,6 +37,8 @@ minikube service back-end-k8s-svc --url
 
 Sonarqube token
 Analyze "1-NexusCore-standards": sqp_964fd500ff883f60960cbeb2c61636a3b87e1beb
+
+We will add the project to SonarQube later.
 
 // Command to check the k8s code check:
 kubectl apply --validate -f deployment.yaml --dry-run=client
