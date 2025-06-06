@@ -54,10 +54,10 @@ services:
       KC_PROXY: edge
       KC_HOSTNAME: localhost
     ports:
-      - "8080:9090"
+      - "8080:8080"
     command: ["start-dev"]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9090"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 10s
       timeout: 5s
       retries: 5
