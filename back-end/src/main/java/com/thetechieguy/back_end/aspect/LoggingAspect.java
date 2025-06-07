@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-	@Around("execution(* com.example.demo.service.*.*(..))")
-	public Object logServiceMethods(ProceedingJoinPoint pjp) throws Throwable {
+	@Around("execution(* com.thetechieguy.back_end.controller.*.*(..))")
+	public Object logControllersMethods(ProceedingJoinPoint pjp) throws Throwable {
 		String methodName = pjp.getSignature().getName();
 		log.info("Entering method: {}", methodName);
 		long start = System.currentTimeMillis();

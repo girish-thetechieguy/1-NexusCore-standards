@@ -6,6 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Collections;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -25,7 +27,7 @@ public class GlobalExceptionHandler {
 				HttpStatus.BAD_REQUEST,
 				"Validation failed",
 				"VALIDATION_ERROR",
-				ex.getBindingResult().getAllErrors()
+				Collections.singletonList(ex.getBindingResult().getAllErrors())
 		);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);  // 400
 	}
