@@ -1,11 +1,16 @@
 package com.thetechieguy.user_service.controller;
 
+import com.thetechieguy.user_service.dto.request.CreateUserDto;
+import com.thetechieguy.user_service.dto.request.UpdateUserDto;
+import com.thetechieguy.user_service.dto.response.UserResponseDto;
 import com.thetechieguy.user_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")

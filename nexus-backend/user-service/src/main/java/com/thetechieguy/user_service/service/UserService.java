@@ -1,13 +1,20 @@
 package com.thetechieguy.user_service.service;
 
 import com.thetechieguy.user_service.constant.ErrorConstants;
+import com.thetechieguy.user_service.dto.request.CreateUserDto;
+import com.thetechieguy.user_service.dto.request.UpdateUserDto;
+import com.thetechieguy.user_service.dto.response.UserResponseDto;
+import com.thetechieguy.user_service.exception.ResourceNotFoundException;
 import com.thetechieguy.user_service.model.User;
 import com.thetechieguy.user_service.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 	private final UserRepository userRepository;
 
-	public UserResponseDto createUser(CreateUserDto dto) {
+	public UserResponseDto createUser(@Valid CreateUserDto dto) {
 		if (userRepository.existsByEmail(dto.getEmail())) {
 			throw new ServiceException(
 					HttpStatus.CONFLICT,
@@ -49,7 +56,7 @@ public class UserService {
 				));
 	}
 
-	public UserResponseDto updateUser(Long id, UpdateUserDto dto) {
+	public UserResponseDto updateUser(Long id, @Valid UpdateUserDto dto) {
 		return userRepository.findById(id)
 				.map(user -> {
 					user.setName(dto.getName());
