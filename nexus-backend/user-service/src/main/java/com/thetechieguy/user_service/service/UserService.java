@@ -5,12 +5,12 @@ import com.thetechieguy.user_service.dto.request.CreateUserDto;
 import com.thetechieguy.user_service.dto.request.UpdateUserDto;
 import com.thetechieguy.user_service.dto.response.UserResponseDto;
 import com.thetechieguy.user_service.exception.ResourceNotFoundException;
+import com.thetechieguy.user_service.exception.ServiceException;
 import com.thetechieguy.user_service.model.User;
 import com.thetechieguy.user_service.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

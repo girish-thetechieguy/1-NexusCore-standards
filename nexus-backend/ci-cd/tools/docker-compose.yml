@@ -32,11 +32,11 @@ services:
   # 3: For SQL
   postgres:
     image: postgres:latest
-    container_name: nexus-user
+    container_name: nexus-app
     environment:
-      POSTGRES_USER: nexus-user
-      POSTGRES_PASSWORD: nexus-user
-      POSTGRES_DB: nexus-user-db
+      POSTGRES_USER: nexus-app
+      POSTGRES_PASSWORD: nexus-app
+      POSTGRES_DB: nexus-app
     ports:
       - "5432:5432"
     volumes:
