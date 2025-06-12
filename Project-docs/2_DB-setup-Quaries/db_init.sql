@@ -38,6 +38,8 @@ CREATE TABLE "nexus_schema"."USERS" (
     updated_by VARCHAR(100)
 );
 
+   CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- Create performance indexes
 CREATE INDEX idx_users_email ON "nexus_schema"."USERS" (email);
 CREATE INDEX idx_users_active ON "nexus_schema"."USERS" (is_active);
@@ -48,31 +50,31 @@ sql
 GRANT USAGE ON SCHEMA "nexus_schema" TO "nexus-app";
 
 -- Grant limited privileges (no DELETE)
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES 
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
     IN SCHEMA "nexus_schema" TO "nexus-app";
 
 -- Grant sequence permission for auto-increment
-GRANT USAGE, SELECT ON ALL SEQUENCES 
+GRANT USAGE, SELECT ON ALL SEQUENCES
     IN SCHEMA "nexus_schema" TO "nexus-app";
 
 -- Set default privileges for future tables
-ALTER DEFAULT PRIVILEGES 
+ALTER DEFAULT PRIVILEGES
     IN SCHEMA "nexus_schema"
-    GRANT SELECT, INSERT, UPDATE ON TABLES 
+    GRANT SELECT, INSERT, UPDATE ON TABLES
     TO "nexus-app";
 
-ALTER DEFAULT PRIVILEGES 
+ALTER DEFAULT PRIVILEGES
     IN SCHEMA "nexus_schema"
-    GRANT USAGE, SELECT ON SEQUENCES 
+    GRANT USAGE, SELECT ON SEQUENCES
     TO "nexus-app";
 5. Sample Data Insertion
 sql
 -- Insert initial admin user
 INSERT INTO "nexus_schema"."USERS" (
-    username, 
-    email, 
-    password_hash, 
-    first_name, 
+    username,
+    email,
+    password_hash,
+    first_name,
     last_name,
     is_active,
     created_by,
@@ -90,14 +92,14 @@ INSERT INTO "nexus_schema"."USERS" (
 
 -- Insert sample regular user
 INSERT INTO "nexus_schema"."USERS" (
-    username, 
-    email, 
-    password_hash, 
-    first_name, 
+    username,
+    email,
+    password_hash,
+    first_name,
     last_name
 ) VALUES (
-    'jdoe',
-    'john.doe@example.com',
+    'jdoe1',
+    'john.doe1@example.com',
     crypt('userpassword', gen_salt('bf')),
     'John',
     'Doe'
@@ -105,8 +107,11 @@ INSERT INTO "nexus_schema"."USERS" (
 6. Verification Queries
 sql
 -- Verify user privileges
-SELECT grantee, privilege_type, table_name 
-FROM information_schema.role_table_grants 
+
+select *from "nexus_schema"."USERS";
+
+SELECT grantee, privilege_type, table_name
+FROM information_schema.role_table_grants
 WHERE grantee = 'nexus-app';
 
 -- Test connection as application user
@@ -114,13 +119,13 @@ WHERE grantee = 'nexus-app';
 SET search_path TO "nexus_schema";
 
 -- Test valid operations (should work)
-INSERT INTO "USERS" (username, email, password_hash) 
+INSERT INTO "nexus_schema"."USERS" (username, email, password_hash)
 VALUES ('test', 'test@example.com', crypt('testpass', gen_salt('bf')));
 
-UPDATE "USERS" SET first_name = 'Test' WHERE username = 'test';
+UPDATE "nexus_schema"."USERS" SET first_name = 'Test' WHERE username = 'test';
 
-SELECT * FROM "USERS" WHERE username = 'test';
+SELECT * FROM "nexus_schema"."USERS" WHERE username = 'test';
 
 -- Test invalid operation (should fail)
-DELETE FROM "USERS" WHERE username = 'test';
+DELETE FROM "nexus_schema"."USERS" WHERE username = 'test';
 -- ERROR:  permission denied for table USERS
