@@ -34,9 +34,9 @@ services:
     image: postgres:latest
     container_name: nexus-app
     environment:
-      POSTGRES_USER: nexus-app
-      POSTGRES_PASSWORD: nexus-app
-      POSTGRES_DB: nexus-app
+      POSTGRES_USER: nexus-admin
+      POSTGRES_PASSWORD: nexus-admin
+      #POSTGRES_DB: nexus-app
     ports:
       - "5432:5432"
     volumes:
