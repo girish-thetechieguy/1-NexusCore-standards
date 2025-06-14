@@ -1,9 +1,11 @@
 package com.thetechieguy.user_service.controller;
 
+import com.thetechieguy.user_service.dto.request.CreateUserDTO;
 import com.thetechieguy.user_service.dto.request.CreateUserDto;
+import com.thetechieguy.user_service.dto.request.UpdateUserDTO;
 import com.thetechieguy.user_service.dto.request.UpdateUserDto;
+import com.thetechieguy.user_service.dto.response.UserResponseDTO;
 import com.thetechieguy.user_service.dto.response.UserResponseDto;
-import com.thetechieguy.user_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,24 +23,24 @@ public class UserController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserResponseDto createUser(@Valid @RequestBody CreateUserDto dto) {
+	public UserResponseDTO createUser(@Valid @RequestBody CreateUserDTO dto) {
 		return userService.createUser(dto);
 	}
 
 	@GetMapping
-	public List<UserResponseDto> getAllUsers() {
+	public List<UserResponseDTO> getAllUsers() {
 		return userService.getAllUsers();
 	}
 
 	@GetMapping("/{id}")
-	public UserResponseDto getUser(@PathVariable Long id) {
+	public UserResponseDTO getUser(@PathVariable Long id) {
 		return userService.getUserById(id);
 	}
 
 	@PutMapping("/{id}")
-	public UserResponseDto updateUser(
+	public UserResponseDTO updateUser(
 			@PathVariable Long id,
-			@Valid @RequestBody UpdateUserDto dto
+			@Valid @RequestBody UpdateUserDTO dto
 	) {
 		return userService.updateUser(id, dto);
 	}
