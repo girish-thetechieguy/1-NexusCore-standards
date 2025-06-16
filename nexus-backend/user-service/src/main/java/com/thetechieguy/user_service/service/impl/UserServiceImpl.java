@@ -16,6 +16,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.AbstractAuditable_.createdBy;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDTO createUser(CreateUserDTO userRequestDTO, String createdBy) {
+	public UserResponseDTO createUser(CreateUserDTO userRequestDTO) {
 		validateEmailUniqueness(userRequestDTO.getEmail());
 
 		User user = User.builder()
@@ -34,8 +36,8 @@ public class UserServiceImpl implements UserService {
 				.password(passwordEncoder.encode(userRequestDTO.getPassword()))
 				.firstName(userRequestDTO.getFirstName())
 				.lastName(userRequestDTO.getLastName())
-				.createdBy(createdBy)
-				.updatedBy(createdBy)
+				.createdBy(userRequestDTO.getUsername())
+				.updatedBy(userRequestDTO.getUsername())
 				.build();
 
 		User savedUser = userRepository.save(user);
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDTO updateUser(Long id, UpdateUserDTO userRequestDTO, String updatedBy) {
+	public UserResponseDTO updateUser(Long id, UpdateUserDTO userRequestDTO) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userRequestDTO.getEmail());
 		user.setFirstName(userRequestDTO.getFirstName());
 		user.setLastName(userRequestDTO.getLastName());
-		user.setUpdatedBy(updatedBy);
+		user.setUpdatedBy(userRequestDTO.getUsername());
 
 		User updatedUser = userRepository.save(user);
 		return mapToUserResponseDTO(updatedUser);
@@ -81,12 +83,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void deleteUser(Long id, String deletedBy) {
+	public void deleteUser(Long id) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
 		user.deactivate();
-		user.setUpdatedBy(deletedBy);
+		user.setUpdatedBy(user.getUsername());
 		userRepository.save(user);
 	}
 

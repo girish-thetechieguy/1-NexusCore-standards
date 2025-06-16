@@ -1,11 +1,8 @@
 package com.thetechieguy.user_service.controller;
 
 import com.thetechieguy.user_service.dto.request.CreateUserDTO;
-import com.thetechieguy.user_service.dto.request.CreateUserDto;
 import com.thetechieguy.user_service.dto.request.UpdateUserDTO;
-import com.thetechieguy.user_service.dto.request.UpdateUserDto;
 import com.thetechieguy.user_service.dto.response.UserResponseDTO;
-import com.thetechieguy.user_service.dto.response.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
