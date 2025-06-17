@@ -8,6 +8,7 @@ import com.thetechieguy.user_service.model.User;
 import com.thetechieguy.user_service.repository.UserRepository;
 import com.thetechieguy.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,7 +86,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void deleteUser(Long id) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+				.map(this::mapToUserResponseDTO)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						HttpStatus.NOT_FOUND,
+						"USER_NOT_FOUND",
+						"User not found with id: " + id
+				));
 
 		user.deactivate();
 		user.setUpdatedBy(user.getUsername());
