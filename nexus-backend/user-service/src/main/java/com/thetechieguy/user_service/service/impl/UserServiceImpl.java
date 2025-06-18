@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 		validateEmailUniqueness(userRequestDTO.getEmail());
 
 		User user = User.builder()
-				.username(userRequestDTO.getUsername())
+				.username(userRequestDTO.getUserName())
 				.email(userRequestDTO.getEmail())
 				.password(passwordEncoder.encode(userRequestDTO.getPassword()))
 				.firstName(userRequestDTO.getFirstName())
