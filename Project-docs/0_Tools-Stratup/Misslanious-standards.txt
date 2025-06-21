@@ -1,0 +1,2 @@
+1: Can generate the serverstart banner from here:
+https://patorjk.com/software/taag/#p=testall&h=0&v=0&f=Avatar&t=user-service

@@ -12,41 +12,41 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
-		return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
-	}
-
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
-		List<String> errors = ex.getBindingResult()
-				.getFieldErrors()
-				.stream()
-				.map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-				.toList();
-
-		ErrorResponse response = ErrorResponse.builder()
-				.code(ErrorConstants.INVALID_INPUT)
-				.message("Validation failed")
-				.details(errors)
-				.build();
-
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler(ServiceException.class)
-	public ResponseEntity<ErrorResponse> handleServiceException(ServiceException ex) {
-		return buildErrorResponse(ex, ex.getStatus());
-	}
-
-	private ResponseEntity<ErrorResponse> buildErrorResponse(
-			BaseException ex,
-			HttpStatus status
-	) {
-		ErrorResponse response = ErrorResponse.builder()
-				.code(ex.getCode())
-				.message(ex.getMessage())
-				.build();
-		return new ResponseEntity<>(response, status);
-	}
+//	@ExceptionHandler(ResourceNotFoundException.class)
+//	public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+//		return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+//	}
+//
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
+//		List<String> errors = ex.getBindingResult()
+//				.getFieldErrors()
+//				.stream()
+//				.map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+//				.toList();
+//
+//		ErrorResponse response = ErrorResponse.builder()
+//				.code(ErrorConstants.INVALID_INPUT)
+//				.message("Validation failed")
+//				.details(errors)
+//				.build();
+//
+//		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//	}
+//
+//	@ExceptionHandler(ServiceException.class)
+//	public ResponseEntity<ErrorResponse> handleServiceException(ServiceException ex) {
+//		return buildErrorResponse(ex, ex.getStatus());
+//	}
+//
+//	private ResponseEntity<ErrorResponse> buildErrorResponse(
+//			BaseException ex,
+//			HttpStatus status
+//	) {
+//		ErrorResponse response = ErrorResponse.builder()
+//				.code(ex.getCode())
+//				.message(ex.getMessage())
+//				.build();
+//		return new ResponseEntity<>(response, status);
+//	}
 }

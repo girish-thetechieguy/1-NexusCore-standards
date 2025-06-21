@@ -8,6 +8,7 @@ import com.thetechieguy.user_service.model.User;
 import com.thetechieguy.user_service.repository.UserRepository;
 import com.thetechieguy.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,9 @@ import static org.springframework.data.jpa.domain.AbstractAuditable_.createdBy;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	@Transactional
@@ -37,8 +40,8 @@ public class UserServiceImpl implements UserService {
 				.password(passwordEncoder.encode(userRequestDTO.getPassword()))
 				.firstName(userRequestDTO.getFirstName())
 				.lastName(userRequestDTO.getLastName())
-				.createdBy(userRequestDTO.getUsername())
-				.updatedBy(userRequestDTO.getUsername())
+				.createdBy(userRequestDTO.getCreatedBy())
+				.updatedBy(userRequestDTO.getUpdatedBy())
 				.build();
 
 		User savedUser = userRepository.save(user);
@@ -58,7 +61,10 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public UserResponseDTO getUserById(Long id) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(
+						HttpStatus.NOT_FOUND,
+						"USER_NOT_FOUND",
+						"User not found with id: " + id));
 		return mapToUserResponseDTO(user);
 	}
 
@@ -66,17 +72,20 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserResponseDTO updateUser(Long id, UpdateUserDTO userRequestDTO) {
 		User user = userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(
+						HttpStatus.NOT_FOUND,
+						"USER_NOT_FOUND",
+						"User not found with id: " + id));
 
 		if (!user.getEmail().equals(userRequestDTO.getEmail())) {
 			validateEmailUniqueness(userRequestDTO.getEmail());
 		}
 
-		user.setUsername(userRequestDTO.getUsername());
+		user.setUsername(userRequestDTO.getUserName());
 		user.setEmail(userRequestDTO.getEmail());
 		user.setFirstName(userRequestDTO.getFirstName());
 		user.setLastName(userRequestDTO.getLastName());
-		user.setUpdatedBy(userRequestDTO.getUsername());
+		user.setUpdatedBy(userRequestDTO.getUserName());
 
 		User updatedUser = userRepository.save(user);
 		return mapToUserResponseDTO(updatedUser);
@@ -86,7 +95,6 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void deleteUser(Long id) {
 		User user = userRepository.findById(id)
-				.map(this::mapToUserResponseDTO)
 				.orElseThrow(() -> new ResourceNotFoundException(
 						HttpStatus.NOT_FOUND,
 						"USER_NOT_FOUND",
@@ -95,6 +103,8 @@ public class UserServiceImpl implements UserService {
 
 		user.deactivate();
 		user.setUpdatedBy(user.getUsername());
+
+		UserResponseDTO userResponseDTO = mapToUserResponseDTO(user);
 		userRepository.save(user);
 	}
 

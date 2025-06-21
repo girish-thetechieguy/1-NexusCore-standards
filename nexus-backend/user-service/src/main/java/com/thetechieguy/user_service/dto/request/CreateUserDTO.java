@@ -18,9 +18,13 @@ public class CreateUserDTO {
 	@Size(min = 2, max = 50, message = "UserName must be between 2-50 characters")
 	private String userName;
 
-	@NotBlank(message = "Name is required")
-	@Size(min = 2, max = 50, message = "Name must be between 2-50 characters")
-	private String name;
+	@NotBlank(message = "FirstName is required")
+	@Size(min = 2, max = 50, message = "FirstName must be between 2-50 characters")
+	private String firstName;
+
+	@NotBlank(message = "LastName is required")
+	@Size(min = 2, max = 50, message = "LastName must be between 2-50 characters")
+	private String lastName;
 
 	@NotBlank(message = "Email is required")
 	@Email(message = "Invalid email format")
@@ -30,4 +34,8 @@ public class CreateUserDTO {
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$",
 			message = "Password must be 8+ chars with letters and numbers")
 	private String password;
+
+	private String createdBy;
+
+	private String updatedBy;
 }
