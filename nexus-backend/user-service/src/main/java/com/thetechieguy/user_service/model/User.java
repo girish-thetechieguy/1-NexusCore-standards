@@ -9,8 +9,8 @@ import org.hibernate.annotations.Where;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "USERS", schema = "nexus_schema")
-@Where(clause = "is_active = true") // Soft delete filter
+@Table(name = "\"USERS\"", schema = "nexus_schema")
+//@Where(clause = "is_active = true") // Soft delete filter
 @Getter
 @Setter
 @NoArgsConstructor
@@ -56,7 +56,6 @@ public class User {
 	@Column(name = "updated_by", length = 100)
 	private String updatedBy;
 
-	// Business methods
 	public void deactivate() {
 		this.active = false;
 		this.updatedAt = ZonedDateTime.now();

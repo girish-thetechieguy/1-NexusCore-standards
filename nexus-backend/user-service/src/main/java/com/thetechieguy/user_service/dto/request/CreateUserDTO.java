@@ -18,14 +18,6 @@ public class CreateUserDTO {
 	@Size(min = 2, max = 50, message = "UserName must be between 2-50 characters")
 	private String userName;
 
-	@NotBlank(message = "FirstName is required")
-	@Size(min = 2, max = 50, message = "FirstName must be between 2-50 characters")
-	private String firstName;
-
-	@NotBlank(message = "LastName is required")
-	@Size(min = 2, max = 50, message = "LastName must be between 2-50 characters")
-	private String lastName;
-
 	@NotBlank(message = "Email is required")
 	@Email(message = "Invalid email format")
 	private String email;
@@ -35,7 +27,14 @@ public class CreateUserDTO {
 			message = "Password must be 8+ chars with letters and numbers")
 	private String password;
 
-	private String createdBy;
+	@NotBlank(message = "FirstName is required")
+	@Size(min = 2, max = 50, message = "FirstName must be between 2-50 characters")
+	private String firstName;
 
-	private String updatedBy;
+	@NotBlank(message = "LastName is required")
+	@Size(min = 2, max = 50, message = "LastName must be between 2-50 characters")
+	private String lastName;
+
+	private boolean active;
+
 }

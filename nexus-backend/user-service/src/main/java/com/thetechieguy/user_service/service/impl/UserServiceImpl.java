@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
 				.password(passwordEncoder.encode(userRequestDTO.getPassword()))
 				.firstName(userRequestDTO.getFirstName())
 				.lastName(userRequestDTO.getLastName())
-				.createdBy(userRequestDTO.getCreatedBy())
-				.updatedBy(userRequestDTO.getUpdatedBy())
+				.createdBy(userRequestDTO.getUserName())
+				.createdAt(ZonedDateTime.now())
 				.build();
 
 		User savedUser = userRepository.save(user);
