@@ -1,5 +1,20 @@
 services:
-  # 1. Zipkin (Distributed Tracing)
+  # 1: For SQL
+  postgres:
+    image: postgres:latest
+    container_name: nexus-app
+    environment:
+      POSTGRES_USER: nexus-admin
+      POSTGRES_PASSWORD: nexus-admin
+      #POSTGRES_DB: nexus-app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # 2. Zipkin (Distributed Tracing)
   zipkin:
     image: openzipkin/zipkin:latest
     container_name: zipkin-nexus
@@ -28,21 +43,6 @@ services:
       interval: 20s
       timeout: 10s
       retries: 5
-
-  # 3: For SQL
-  postgres:
-    image: postgres:latest
-    container_name: nexus-app
-    environment:
-      POSTGRES_USER: nexus-admin
-      POSTGRES_PASSWORD: nexus-admin
-      #POSTGRES_DB: nexus-app
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
 
   # 4. Keycloak (Authentication)
   keycloak:
